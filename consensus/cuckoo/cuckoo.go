@@ -156,6 +156,9 @@ const CUCKAROO = "cuckaroo"
 const XCORTEX = "xcortex"
 
 func (cuckoo *Cuckoo) InitPlugin() error {
+	if cuckoo.config.Algorithm == "" {
+		cuckoo.config.Algorithm = CUCKAROO
+	}
 	var errc error
 	if cuckoo.config.Algorithm == CUCKAROO {
 		var minerName string = "cpu"
