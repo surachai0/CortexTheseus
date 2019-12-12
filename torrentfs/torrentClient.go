@@ -29,7 +29,7 @@ import (
 )
 
 const (
-	bucket                  = 8 //it is best size is 1/3 full nodes
+	bucket                  = params.Bucket //it is best size is 1/3 full nodes
 	updateTorrentChanBuffer = batch
 	torrentChanSize         = 1024
 
@@ -315,7 +315,7 @@ func (t *Torrent) download(p, slot int) {
 		s = t.Torrent.NumPieces() - p
 	}
 	e = s + p
-	log.Info("Download slot", "hash", t.infohash, "b", s, "e", e, "s", slot, "p", p, "t", t.Torrent.NumPieces(), "b", bucket)
+	log.Info("Download slot", "hash", t.infohash, "b", s, "e", e, "p", p, "t", t.Torrent.NumPieces(), "s", slot, "b", bucket)
 	t.Torrent.DownloadPieces(s, e)
 }
 
@@ -1059,7 +1059,7 @@ func (tm *TorrentManager) activeTorrentLoop() {
 			}
 
 			if counter >= loops {
-				log.Info("Fs status", "pending", len(tm.pendingTorrents), "active", len(tm.activeTorrents), "wait", active_wait, "downloading", active_running, "paused", active_paused, "boost", active_boost, "seeding", len(tm.seedingTorrents), "pieces", all, "size", common.StorageSize(total_size), "speed_a", common.StorageSize(total_size/log_counter*queryTimeInterval).String()+"/s", "speed_b", common.StorageSize(current_size/counter*queryTimeInterval).String()+"/s", "channel", len(tm.updateTorrent), "id", tm.id, "slot", tm.slot)
+				log.Info("Fs status", "pending", len(tm.pendingTorrents), "active", len(tm.activeTorrents), "wait", active_wait, "downloading", active_running, "paused", active_paused, "boost", active_boost, "seeding", len(tm.seedingTorrents), "pieces", all, "size", common.StorageSize(total_size), "speed_a", common.StorageSize(total_size/log_counter*queryTimeInterval).String()+"/s", "speed_b", common.StorageSize(current_size/counter*queryTimeInterval).String()+"/s", "channel", len(tm.updateTorrent), "slot", tm.slot)
 				/*tmp := make(map[common.Hash]int)
 				sum := 0
 				for _, ttt := range tm.client.Torrents() {
