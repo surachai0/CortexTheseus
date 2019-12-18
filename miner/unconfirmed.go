@@ -121,7 +121,7 @@ func (set *unconfirmedBlocks) Shift(height uint64) {
 			if included {
 				log.Info("⚒️  block forked", "number", next.index, "hash", next.hash)
 			} else {
-				log.Info("👻 block lost", "number", next.index, "hash", next.hash)
+				//log.Info("👻 block lost", "number", next.index, "hash", next.hash)
 			}
 		}
 		// Drop the block out of the ring

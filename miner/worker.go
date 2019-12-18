@@ -139,7 +139,7 @@ type worker struct {
 	chainHeadCh  chan core.ChainHeadEvent
 	chainHeadSub event.Subscription
 	chainSideCh  chan core.ChainSideEvent
-	chainSideSub event.Subscription
+	//chainSideSub event.Subscription
 
 	// Channels
 	newWorkCh          chan *newWorkReq
@@ -203,7 +203,7 @@ func newWorker(config *params.ChainConfig, engine consensus.Engine, ctxc Backend
 	worker.txsSub = ctxc.TxPool().SubscribeNewTxsEvent(worker.txsCh)
 	// Subscribe events for blockchain
 	worker.chainHeadSub = ctxc.BlockChain().SubscribeChainHeadEvent(worker.chainHeadCh)
-	worker.chainSideSub = ctxc.BlockChain().SubscribeChainSideEvent(worker.chainSideCh)
+	//worker.chainSideSub = ctxc.BlockChain().SubscribeChainSideEvent(worker.chainSideCh)
 
 	// Sanitize recommit interval if the user-specified one is too short.
 	if recommit < minRecommitInterval {
@@ -398,7 +398,7 @@ func (w *worker) newWorkLoop(recommit time.Duration) {
 func (w *worker) mainLoop() {
 	defer w.txsSub.Unsubscribe()
 	defer w.chainHeadSub.Unsubscribe()
-	defer w.chainSideSub.Unsubscribe()
+	//defer w.chainSideSub.Unsubscribe()
 
 	for {
 		select {
@@ -473,8 +473,8 @@ func (w *worker) mainLoop() {
 			return
 		case <-w.chainHeadSub.Err():
 			return
-		case <-w.chainSideSub.Err():
-			return
+		//case <-w.chainSideSub.Err():
+		//	return
 		}
 	}
 }
