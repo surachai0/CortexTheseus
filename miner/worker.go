@@ -817,7 +817,7 @@ func (w *worker) commitNewWork(interrupt *int32, noempty bool, timestamp int64) 
 	// this will ensure we're not going off too far in the future
 	if now := time.Now().Unix(); timestamp > now+1 {
 		wait := time.Duration(timestamp-now) * time.Second
-		log.Info("Mining too far in the future", "wait", common.PrettyDuration(wait))
+		log.Debug("Mining too far in the future", "wait", common.PrettyDuration(wait))
 		time.Sleep(wait)
 	}
 
@@ -947,12 +947,12 @@ func (w *worker) commit(uncles []*types.Header, interval func(), update bool, st
 				feesWei.Add(feesWei, new(big.Int).Mul(new(big.Int).SetUint64(receipts[i].GasUsed), tx.GasPrice()))
 			}
 			feesCortex := new(big.Float).Quo(new(big.Float).SetInt(feesWei), new(big.Float).SetInt(big.NewInt(params.Cortex)))
-			mined := new(big.Float).Quo(new(big.Float).SetInt(new(big.Int).Sub(block.Supply(), params.CTXC_INIT)), new(big.Float).SetInt(big.NewInt(params.Cortex)))
+			//mined := new(big.Float).Quo(new(big.Float).SetInt(new(big.Int).Sub(block.Supply(), params.CTXC_INIT)), new(big.Float).SetInt(big.NewInt(params.Cortex)))
 			//peace := new(big.Float).Quo(new(big.Float).SetInt(block.Supply()), new(big.Float).SetInt(params.CTXC_TOP))
 			//capacity := new(big.Float).Quo(new(big.Float).SetInt(block.QuotaUsed()), new(big.Float).SetInt(block.Quota()))
 
 			log.Info("Commit new mining work", "number", block.Number(), "sealhash", w.engine.SealHash(block.Header()),
-				"uncles", len(uncles), "txs", w.current.tcount, "gas", block.GasUsed(), "fees", feesCortex, "elapsed", common.PrettyDuration(time.Since(start)), "diff", block.Difficulty(), "mined", mined /*"peace", peace,*/, "quota", block.Quota(), "used", block.QuotaUsed()) //, "capacity", capacity)
+				"uncles", len(uncles), "txs", w.current.tcount, "gas", block.GasUsed(), "fees", feesCortex, "elapsed", common.PrettyDuration(time.Since(start)), "diff", block.Difficulty()/*, "mined", mined "peace", peace,, "quota", block.Quota(), "used", block.QuotaUsed()*/) //, "capacity", capacity)
 
 		case <-w.exitCh:
 			log.Info("Worker has exited")
