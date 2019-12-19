@@ -152,7 +152,7 @@ var DefaultTxPoolConfig = TxPoolConfig{
 	Journal:   "transactions.rlp",
 	Rejournal: time.Hour,
 
-	PriceLimit: 1,
+	PriceLimit: 0,
 	PriceBump:  10,
 
 	AccountSlots: 16,
